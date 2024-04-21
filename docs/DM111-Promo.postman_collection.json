@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "17c3cc81-a7ad-4fae-97dd-52516b376713",
+		"name": "DM111-Promo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9872708"
+	},
+	"item": [
+		{
+			"name": "promo",
+			"item": [
+				{
+					"name": "Fetch All Promo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Promo by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo/{{promoId}}",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo",
+								"{{promoId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch All Promo by User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo/users/{{userId}}",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo",
+								"users",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Promo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set Super Market List id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"promoId\", jsonData.id);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Token",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Promoção do Dia das Mães 4\",\n    \"starting\": \"10/04/2024\",\n    \"expiration\": \"18/04/2024\",\n    \"products\": [\n        {\n            \"id\": \"05a7ed8e-3754-4d69-9625-949a7e69f0f5\",\n            \"discount\": 15 \n        },\n        {\n            \"id\": \"{{productId}}\",\n            \"discount\": 15 \n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Promo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Token",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Promoção do Dia das Mães 4 - update\",\n    \"starting\": \"10/03/2024\",\n    \"expiration\": \"18/04/2024\",\n    \"products\": [\n        {\n            \"id\": \"05a7ed8e-3754-4d69-9625-949a7e69f0f5\",\n            \"discount\": 10 \n        },\n        {\n            \"id\": \"{{productId}}\",\n            \"discount\": 12 \n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo/{{promoId}}",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo",
+								"{{promoId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Promo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Token",
+								"value": "{{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo/{{promoId}}",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo",
+								"{{promoId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate Promo Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set token ad userId\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"token\", jsonData.token);\r",
+									"    pm.environment.set(\"userId\", jsonData.userId);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"client@gmail.com\",\r\n    \"password\": \"abc123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo/auth",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate Promo Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set token ad userId\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"adminToken\", jsonData.token);\r",
+									"    pm.environment.set(\"adminUserId\", jsonData.userId);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"abc123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host-promo}}/dm111/promo/auth",
+							"host": [
+								"{{host-promo}}"
+							],
+							"path": [
+								"dm111",
+								"promo",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Authenticate Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set token ad userId\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"adminToken\", jsonData.token);\r",
+									"    pm.environment.set(\"adminUserId\", jsonData.userId);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"abc123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/dm111/auth",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dm111",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate Client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set token ad userId\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"token\", jsonData.token);\r",
+									"    pm.environment.set(\"userId\", jsonData.userId);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"client@gmail.com\",\r\n    \"password\": \"abc123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/dm111/auth",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dm111",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
