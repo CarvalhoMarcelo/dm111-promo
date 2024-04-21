@@ -10,8 +10,6 @@ import br.inatel.dm111promo.persistence.promo.PromoProduct;
 import br.inatel.dm111promo.persistence.promo.PromoRepository;
 import br.inatel.dm111promo.persistence.supermarketlist.SuperMarketList;
 import br.inatel.dm111promo.persistence.supermarketlist.SuperMarketListFirebaseRepository;
-import org.apache.commons.collections4.Equator;
-import org.apache.commons.collections4.IterableUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -51,7 +49,7 @@ public class PromoService {
         List<String> userSplProducts = getUserSplProducts(userId);;
 
         // build the promo list with the relevant products for the user
-        return getUserPromoList(userSplProducts);
+        return getUserPromoList(userSplProducts, searchAll());
     }
 
     public Promo searchById(String id) throws ApiException {
@@ -158,9 +156,8 @@ public class PromoService {
     }
 
     // retrieve only promo list from a valid date interval
-    private List<Promo> getUserPromoList(List<String> userSplProducts) throws ApiException {
+    public List<Promo> getUserPromoList(List<String> userSplProducts, List<Promo> promoList) throws ApiException {
         List<Promo> userPromoList = new ArrayList<>();
-        List<Promo> promoList = searchAll(); // get all promo
 
         if(!promoList.isEmpty()) {
             Date actual_date = getDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
