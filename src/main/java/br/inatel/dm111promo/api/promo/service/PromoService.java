@@ -3,6 +3,7 @@ package br.inatel.dm111promo.api.promo.service;
 import br.inatel.dm111promo.api.core.ApiException;
 import br.inatel.dm111promo.api.core.AppErrorCode;
 import br.inatel.dm111promo.api.promo.PromoRequest;
+import br.inatel.dm111promo.api.promo.PromoResponseByUser;
 import br.inatel.dm111promo.persistence.product.Product;
 import br.inatel.dm111promo.persistence.product.ProductRepository;
 import br.inatel.dm111promo.persistence.promo.Promo;
@@ -44,7 +45,7 @@ public class PromoService {
         }
     }
 
-    public List<Promo> searchAllByUser(String userId) throws ApiException {
+    public List<PromoResponseByUser> searchAllByUser(String userId) throws ApiException {
         // build a list of all supermarket lists of the user
         List<String> userSplProducts = getUserSplProducts(userId);;
 
@@ -156,8 +157,8 @@ public class PromoService {
     }
 
     // retrieve only promo list from a valid date interval
-    public List<Promo> getUserPromoList(List<String> userSplProducts, List<Promo> promoList) throws ApiException {
-        List<Promo> userPromoList = new ArrayList<>();
+    public List<PromoResponseByUser> getUserPromoList(List<String> userSplProducts, List<Promo> promoList) throws ApiException {
+        List<PromoResponseByUser> userPromoList = new ArrayList<>();
 
         if(!promoList.isEmpty()) {
             Date actual_date = getDate(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
@@ -168,9 +169,12 @@ public class PromoService {
                 expDate = getDate(promo.getExpiration());
                 // filter only valid promo
                 if(actual_date.compareTo(startDate) >= 0 && actual_date.compareTo(expDate) <= 0) {
+                    List<PromoProduct> allPromoProductList = new ArrayList<>(promo.getProducts());
                     List<PromoProduct> promoProductList = buildPromoProductList(promo,userSplProducts);
                     if(!promoProductList.isEmpty()){
-                        userPromoList.add(buildPromo(promo, promoProductList));
+                        userPromoList.add(buildPromo(promo, promoProductList, allPromoProductList));
+                    } else {
+                        userPromoList.add(buildPromo(promo, new ArrayList<>(), allPromoProductList));
                     }
                 }
             }
@@ -178,13 +182,14 @@ public class PromoService {
         return userPromoList;
     }
 
-    private Promo buildPromo(Promo promo, List<PromoProduct> promoProductList) {
-        return new Promo(
+    private PromoResponseByUser buildPromo(Promo promo, List<PromoProduct> promoProductList, List<PromoProduct> allPromoProductList) {
+        return new PromoResponseByUser(
                 promo.getId(),
                 promo.getName(),
                 promo.getStarting(),
                 promo.getExpiration(),
-                promoProductList);
+                promoProductList,
+                allPromoProductList);
     }
 
     // build the promo list for the user containing only the relevant products.

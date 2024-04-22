@@ -2,6 +2,7 @@ package br.inatel.dm111promo.api.promo.controller;
 
 import br.inatel.dm111promo.api.core.ApiException;
 import br.inatel.dm111promo.api.promo.PromoRequest;
+import br.inatel.dm111promo.api.promo.PromoResponseByUser;
 import br.inatel.dm111promo.api.promo.service.PromoService;
 import br.inatel.dm111promo.persistence.promo.Promo;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class PromoController {
     }
 
     @GetMapping("/promo/users/{userId}")
-    public ResponseEntity<List<Promo>> getAllByUser(@PathVariable("userId") String userId) throws ApiException {
+    public ResponseEntity<List<PromoResponseByUser>> getAllByUser(@PathVariable("userId") String userId) throws ApiException {
         var list = service.searchAllByUser(userId);
         return ResponseEntity.ok(list);
     }
